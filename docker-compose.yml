@@ -10,7 +10,7 @@ services:
     ports:
       - 2181:2181
     networks:
-      net_kafka:
+      net_kafka-1:
         ipv4_address: 172.18.0.6
 
   kafka-1:
@@ -30,13 +30,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
     ports:
       - "9092:9092"
-    # healthcheck:
-    #   test: ["CMD", "kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
-    #   interval: 7s
-    #   timeout: 30s
-    #   retries: 5
     networks:
-      net_kafka:
+      net_kafka-1:
         ipv4_address: 172.18.0.8
 
 
@@ -48,7 +43,7 @@ services:
     environment:
       ZK_HOSTS: "zookeeper:2181"
     networks:
-      net_kafka:
+      net_kafka-1:
         ipv4_address: 172.18.0.7
 
 
@@ -72,7 +67,7 @@ services:
       - WAIT_HOST_CONNECT_TIMEOUT=30
 
     networks:
-      net_kafka:
+      net_kafka-1:
         ipv4_address: 172.18.0.2  # Asigna una dirección IP específica a 'app'
 
   #! POSTGRESQL
@@ -92,11 +87,12 @@ services:
     #   timeout: 5s
     #   retries: 5
     networks:
-      net_kafka:
+      net_kafka-1:
         ipv4_address: 172.18.0.3  # Asigna una dirección IP específica a 'database'
 
 networks:
-  net_kafka:
+  net_kafka-1:
+    name: net_kafka-1
     driver: bridge
     ipam:
       driver: default
